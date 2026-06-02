@@ -1,0 +1,30 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Configure install auth
+        run: |
+          printf '//npm.pkg.github.com/:_authToken=%s\n@leinadeez:registry=https://npm.pkg.github.com\n' "${{ secrets.PACKAGES_TOKEN }}" > .npmrc
+      - run: pnpm install
+      - run: pnpm build
+      - name: Configure publish auth and publish
+        run: |
+          printf '//npm.pkg.github.com/:_authToken=%s\n@leinadeez:registry=https://npm.pkg.github.com\n' "${{ secrets.GITHUB_TOKEN }}" > .npmrc
+          pnpm publish --no-git-checks
