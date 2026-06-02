@@ -8,4 +8,5 @@ export default defineConfig({
   external: ['react', 'react-dom', 'framer-motion'],
   sourcemap: true,
   clean: true,
+  banner: { js: "'use client';" },
 })
