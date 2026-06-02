@@ -22,7 +22,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
       - run: pnpm install
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: pnpm build
       - run: pnpm publish --no-git-checks
         env:
