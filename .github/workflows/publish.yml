@@ -20,9 +20,9 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://npm.pkg.github.com'
+      - name: Authenticate to GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGES_TOKEN }}" >> ~/.npmrc
       - run: pnpm install
-        env:
-          GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: pnpm build
       - run: pnpm publish --no-git-checks
         env:
